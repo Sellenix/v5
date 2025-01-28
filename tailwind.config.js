@@ -65,15 +65,7 @@ module.exports = {
           to: { textShadow: "0 0 10px #fff, 0 0 20px #fff, 0 0 30px #00ff00, 0 0 40px #00ff00" },
         },
       },
-      borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
-      },
     },
-  },
-  variants: {
-    extend: {},
   },
   plugins: [require("tailwindcss-animate")],
 }
