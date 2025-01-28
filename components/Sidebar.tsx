@@ -1,6 +1,6 @@
 import type React from "react"
 import Link from "next/link"
-import { HomeIcon, ShoppingCartIcon, ChartBarIcon, CogIcon } from "@heroicons/react/outline"
+import { HomeIcon, ShoppingCartIcon, ChartBarIcon, CogIcon } from "@heroicons/react/24/outline"
 
 const Sidebar: React.FC = () => {
   return (
@@ -8,35 +8,27 @@ const Sidebar: React.FC = () => {
       <nav>
         <ul className="space-y-4">
           <li>
-            <Link href="/dashboard">
-              <a className="flex items-center space-x-2 hover:text-purple-300 transition-colors">
-                <HomeIcon className="h-6 w-6" />
-                <span>Dashboard</span>
-              </a>
+            <Link href="/dashboard" className="flex items-center space-x-2 hover:text-purple-300 transition-colors">
+              <HomeIcon className="h-6 w-6" />
+              <span>Dashboard</span>
             </Link>
           </li>
           <li>
-            <Link href="/builder">
-              <a className="flex items-center space-x-2 hover:text-purple-300 transition-colors">
-                <ShoppingCartIcon className="h-6 w-6" />
-                <span>Website Builder</span>
-              </a>
+            <Link href="/builder" className="flex items-center space-x-2 hover:text-purple-300 transition-colors">
+              <ShoppingCartIcon className="h-6 w-6" />
+              <span>Website Builder</span>
             </Link>
           </li>
           <li>
-            <Link href="/seo-tools">
-              <a className="flex items-center space-x-2 hover:text-purple-300 transition-colors">
-                <ChartBarIcon className="h-6 w-6" />
-                <span>SEO Tools</span>
-              </a>
+            <Link href="/seo-tools" className="flex items-center space-x-2 hover:text-purple-300 transition-colors">
+              <ChartBarIcon className="h-6 w-6" />
+              <span>SEO Tools</span>
             </Link>
           </li>
           <li>
-            <Link href="/account">
-              <a className="flex items-center space-x-2 hover:text-purple-300 transition-colors">
-                <CogIcon className="h-6 w-6" />
-                <span>Account Settings</span>
-              </a>
+            <Link href="/account" className="flex items-center space-x-2 hover:text-purple-300 transition-colors">
+              <CogIcon className="h-6 w-6" />
+              <span>Account Settings</span>
             </Link>
           </li>
         </ul>
