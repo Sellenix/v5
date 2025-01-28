@@ -6,10 +6,34 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button"
 import { toast } from "@/components/ui/use-toast"
 
+interface User {
+  name: string
+  email: string
+  createdAt: string
+}
+
+interface Subscription {
+  id: string
+  plan: {
+    name: string
+  }
+  status: string
+  startDate: string
+  endDate: string
+}
+
+interface SEOReport {
+  id: string
+  websiteUrl: string
+  createdAt: string
+  score: number
+  reportUrl: string
+}
+
 export default function Dashboard() {
-  const [user, setUser] = useState(null)
-  const [subscriptions, setSubscriptions] = useState([])
-  const [seoReports, setSeoReports] = useState([])
+  const [user, setUser] = useState<User | null>(null)
+  const [subscriptions, setSubscriptions] = useState<Subscription[]>([])
+  const [seoReports, setSeoReports] = useState<SEOReport[]>([])
 
   useEffect(() => {
     fetchDashboardData()
@@ -18,9 +42,9 @@ export default function Dashboard() {
   const fetchDashboardData = async () => {
     try {
       const [userResponse, subscriptionsResponse, seoReportsResponse] = await Promise.all([
-        axios.get("/api/user"),
-        axios.get("/api/subscriptions"),
-        axios.get("/api/seo-reports"),
+        axios.get<User>("/api/user"),
+        axios.get<Subscription[]>("/api/subscriptions"),
+        axios.get<SEOReport[]>("/api/seo-reports"),
       ])
       setUser(userResponse.data)
       setSubscriptions(subscriptionsResponse.data)
