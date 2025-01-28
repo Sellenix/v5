@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next"
 import { getSession } from "next-auth/react"
-import prisma from "@/lib/prisma"
+import prisma from "../../lib/prisma"
 import { createMollieClient } from "@mollie/api-client"
 
 const mollieClient = createMollieClient({ apiKey: process.env.MOLLIE_API_KEY })
