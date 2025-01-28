@@ -7,16 +7,25 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { toast } from "@/components/ui/use-toast"
 
+interface Package {
+  id: string
+  name: string
+  description: string
+  price: number
+  features: string
+  icon: string
+}
+
 export default function Home() {
-  const [packages, setPackages] = useState([])
-  const [selectedPackage, setSelectedPackage] = useState(null)
+  const [packages, setPackages] = useState<Package[]>([])
+  const [selectedPackage, setSelectedPackage] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
 
   useEffect(() => {
     const fetchPackages = async () => {
       try {
-        const response = await axios.get("/api/packages")
+        const response = await axios.get<Package[]>("/api/packages")
         setPackages(response.data)
       } catch (error) {
         console.error("Error fetching packages:", error)
@@ -31,7 +40,7 @@ export default function Home() {
     fetchPackages()
   }, [])
 
-  const handleSelectPackage = (packageId) => {
+  const handleSelectPackage = (packageId: string) => {
     setSelectedPackage(packageId)
   }
 
@@ -109,7 +118,7 @@ export default function Home() {
       {selectedPackage && (
         <div className="text-center">
           <h2 className="text-2xl font-bold mb-4">
-            Je hebt {packages.find((p) => p.id === selectedPackage).name} geselecteerd
+            Je hebt {packages.find((p) => p.id === selectedPackage)?.name} geselecteerd
           </h2>
           <Button
             onClick={handleOrder}
