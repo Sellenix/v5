@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import axios from "axios"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -6,16 +6,31 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { toast } from "@/components/ui/use-toast"
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts"
 
+interface SEOData {
+  score: number
+  keywordDensity: number
+  keywordInTitle: boolean
+  keywordInMetaDescription: boolean
+  technicalIssues: Array<{
+    severity: "high" | "medium" | "low"
+    description: string
+  }>
+  rankingTrend: Array<{
+    date: string
+    ranking: number
+  }>
+}
+
 export function SEOTools() {
   const [url, setUrl] = useState("")
   const [keyword, setKeyword] = useState("")
-  const [seoData, setSeoData] = useState(null)
+  const [seoData, setSeoData] = useState<SEOData | null>(null)
   const [loading, setLoading] = useState(false)
 
   const handleAnalyze = async () => {
     setLoading(true)
     try {
-      const response = await axios.post("/api/seo/analyze", { url, keyword })
+      const response = await axios.post<SEOData>("/api/seo/analyze", { url, keyword })
       setSeoData(response.data)
     } catch (error) {
       console.error("Error analyzing SEO:", error)
