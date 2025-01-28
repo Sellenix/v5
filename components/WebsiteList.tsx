@@ -4,8 +4,16 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { toast } from "@/components/ui/use-toast"
 
+interface Website {
+  id: string
+  name: string
+  isPublished: boolean
+  domain: string
+  updatedAt: string
+}
+
 export function WebsiteList() {
-  const [websites, setWebsites] = useState([])
+  const [websites, setWebsites] = useState<Website[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -14,7 +22,7 @@ export function WebsiteList() {
 
   const fetchWebsites = async () => {
     try {
-      const response = await axios.get("/api/websites")
+      const response = await axios.get<Website[]>("/api/websites")
       setWebsites(response.data)
       setLoading(false)
     } catch (error) {
@@ -28,7 +36,7 @@ export function WebsiteList() {
     }
   }
 
-  const handlePublish = async (websiteId) => {
+  const handlePublish = async (websiteId: string) => {
     try {
       await axios.post(`/api/websites/${websiteId}/publish`)
       toast({

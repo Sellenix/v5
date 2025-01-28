@@ -4,8 +4,19 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { toast } from "@/components/ui/use-toast"
 
+interface SEOReport {
+  id: string
+  website: {
+    id: string
+    name: string
+  }
+  createdAt: string
+  score: number
+  summary: string
+}
+
 export function SEOReports() {
-  const [reports, setReports] = useState([])
+  const [reports, setReports] = useState<SEOReport[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -14,7 +25,7 @@ export function SEOReports() {
 
   const fetchReports = async () => {
     try {
-      const response = await axios.get("/api/seo-reports")
+      const response = await axios.get<SEOReport[]>("/api/seo-reports")
       setReports(response.data)
       setLoading(false)
     } catch (error) {
@@ -28,7 +39,7 @@ export function SEOReports() {
     }
   }
 
-  const handleGenerateReport = async (websiteId) => {
+  const handleGenerateReport = async (websiteId: string) => {
     try {
       await axios.post(`/api/seo-reports/generate/${websiteId}`)
       toast({

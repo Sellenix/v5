@@ -4,8 +4,18 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { toast } from "@/components/ui/use-toast"
 
+interface Subscription {
+  id: string
+  package: {
+    name: string
+    price: number
+  }
+  status: string
+  nextBillingDate: string
+}
+
 export function SubscriptionManager() {
-  const [subscriptions, setSubscriptions] = useState([])
+  const [subscriptions, setSubscriptions] = useState<Subscription[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -14,7 +24,7 @@ export function SubscriptionManager() {
 
   const fetchSubscriptions = async () => {
     try {
-      const response = await axios.get("/api/subscriptions")
+      const response = await axios.get<Subscription[]>("/api/subscriptions")
       setSubscriptions(response.data)
       setLoading(false)
     } catch (error) {
@@ -28,9 +38,9 @@ export function SubscriptionManager() {
     }
   }
 
-  const handleUpgrade = async (subscriptionId) => {
+  const handleUpgrade = async (subscriptionId: string) => {
     try {
-      const response = await axios.post(`/api/subscriptions/${subscriptionId}/upgrade`)
+      const response = await axios.post<Subscription>(`/api/subscriptions/${subscriptionId}/upgrade`)
       toast({
         title: "Succes",
         description: "Uw abonnement is succesvol geüpgraded.",
@@ -46,9 +56,9 @@ export function SubscriptionManager() {
     }
   }
 
-  const handleDowngrade = async (subscriptionId) => {
+  const handleDowngrade = async (subscriptionId: string) => {
     try {
-      const response = await axios.post(`/api/subscriptions/${subscriptionId}/downgrade`)
+      const response = await axios.post<Subscription>(`/api/subscriptions/${subscriptionId}/downgrade`)
       toast({
         title: "Succes",
         description: "Uw abonnement is succesvol gedowngraded.",
@@ -64,7 +74,7 @@ export function SubscriptionManager() {
     }
   }
 
-  const handleCancel = async (subscriptionId) => {
+  const handleCancel = async (subscriptionId: string) => {
     try {
       await axios.post(`/api/subscriptions/${subscriptionId}/cancel`)
       toast({

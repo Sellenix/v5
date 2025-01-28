@@ -3,8 +3,16 @@ import axios from "axios"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { toast } from "@/components/ui/use-toast"
 
+interface Payment {
+  id: string
+  amount: number
+  createdAt: string
+  status: string
+  description: string
+}
+
 export function PaymentHistory() {
-  const [payments, setPayments] = useState([])
+  const [payments, setPayments] = useState<Payment[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -13,7 +21,7 @@ export function PaymentHistory() {
 
   const fetchPayments = async () => {
     try {
-      const response = await axios.get("/api/payments")
+      const response = await axios.get<Payment[]>("/api/payments")
       setPayments(response.data)
       setLoading(false)
     } catch (error) {
