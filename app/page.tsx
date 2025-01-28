@@ -1,49 +1,35 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import axios from "axios"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { toast } from "@/components/ui/use-toast"
 
-const packages = [
-  {
-    id: "webshop",
-    name: "Webshop",
-    description: "Start je eigen online winkel met geavanceerde e-commerce functionaliteiten",
-    price: 29.99,
-    features: ["Productcatalogus", "Winkelwagen", "Betalingsverwerking", "Voorraadbeheer", "SEO-optimalisatie"],
-    icon: "🛒",
-  },
-  {
-    id: "website",
-    name: "Website",
-    description: "Bouw een professionele website met onze geavanceerde drag-and-drop builder",
-    price: 19.99,
-    features: [
-      "Drag-and-drop builder",
-      "Responsief ontwerp",
-      "SEO-optimalisatie",
-      "Contactformulier",
-      "Aangepaste domeinnaam",
-    ],
-    icon: "🌐",
-  },
-  {
-    id: "seo-tool",
-    name: "SEO-tool",
-    description: "Verbeter je online zichtbaarheid met onze krachtige SEO-tools",
-    price: 39.99,
-    features: ["Zoekwoordanalyse", "Backlink-checker", "Site-audit", "Concurrentieanalyse", "Rangschikkingstracker"],
-    icon: "📈",
-  },
-]
-
 export default function Home() {
+  const [packages, setPackages] = useState([])
   const [selectedPackage, setSelectedPackage] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
+
+  useEffect(() => {
+    const fetchPackages = async () => {
+      try {
+        const response = await axios.get("/api/packages")
+        setPackages(response.data)
+      } catch (error) {
+        console.error("Error fetching packages:", error)
+        toast({
+          title: "Fout",
+          description: "Er is een fout opgetreden bij het ophalen van de pakketten. Probeer het later opnieuw.",
+          variant: "destructive",
+        })
+      }
+    }
+
+    fetchPackages()
+  }, [])
 
   const handleSelectPackage = (packageId) => {
     setSelectedPackage(packageId)
@@ -101,9 +87,9 @@ export default function Home() {
                 <span className="text-sm">/maand</span>
               </p>
               <ul className="list-disc list-inside">
-                {pkg.features.map((feature) => (
-                  <li key={feature} className="mb-2">
-                    {feature}
+                {pkg.features.split(",").map((feature) => (
+                  <li key={feature.trim()} className="mb-2">
+                    {feature.trim()}
                   </li>
                 ))}
               </ul>
